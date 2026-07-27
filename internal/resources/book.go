@@ -10,7 +10,7 @@
 //   - @api.expect(book, validate=True) becomes explicit JSON decoding plus
 //     model.Book.Validate().
 //
-// buildRouter wires all routes onto a chi router so that the existing
+// BuildRouter wires all routes onto a chi router so that the existing
 // cmd/server/main.go entry point can serve the API.
 package resources
 
@@ -24,7 +24,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"internal/model"
+	"migrated-app/internal/model"
 )
 
 // bookStore is an in-memory, concurrency-safe collection of books.
@@ -268,10 +268,10 @@ func (rsc *BookResource) RegisterRoutes(r chi.Router) {
 	r.Put("/books/{id}", rsc.Update)
 }
 
-// buildRouter constructs the fully-wired HTTP handler for the application.
+// BuildRouter constructs the fully-wired HTTP handler for the application.
 // It is called directly by cmd/server/main.go, so the name and signature must
-// remain exactly func buildRouter() http.Handler.
-func buildRouter() http.Handler {
+// remain exactly func BuildRouter() http.Handler.
+func BuildRouter() http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)

@@ -46,9 +46,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
-	"example.com/bookapi/internal/environment"
-	"example.com/bookapi/internal/resources"
-	"example.com/bookapi/internal/server"
+	"migrated-app/internal/environment"
+	"migrated-app/internal/resources"
+	"migrated-app/internal/server"
 )
 
 func main() {

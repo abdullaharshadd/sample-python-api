@@ -17,16 +17,8 @@ export function bootstrap(): void {
 }
 
 // Ensure routes are mounted whenever this module is imported.
-try {
-  registerRoutes();
-} catch (err) {
-  console.error('Failed to register routes:', err);
-}
+registerRoutes();
 
 if (require.main === module) {
-  try {
-    server.run();
-  } catch (err) {
-    console.error('Server failed to start:', err);
-  }
+  server.run();
 }

@@ -1,18 +1,19 @@
 import 'dotenv/config';
-import express from 'express';
-import { errorHandler } from './middleware/errorHandler';
-import { bookRouter } from './src/resources/book';
+import { server } from './src/server/instance';
 
-const app = express();
-app.use(express.json());
+server.run();
 
-app.use('/', bookRouter);
+export default server.app;
 
-app.use(errorHandler);
+Now I need to create the missing book router and environment config, and provide a .env file.
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
 
-export default app;
+
+
+
+import 'dotenv/config';
+import { server } from './src/server/instance';
+
+server.run();
+
+export default server.app;

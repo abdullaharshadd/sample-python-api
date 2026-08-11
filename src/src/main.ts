@@ -19,6 +19,6 @@ export function bootstrap(): void {
 // Ensure routes are mounted whenever this module is imported.
 registerRoutes();
 
-if (typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module) {
+if (require.main === module) {
   server.run();
 }

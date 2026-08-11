@@ -1,12 +1,12 @@
 import 'dotenv/config';
 import express from 'express';
 import { errorHandler } from './middleware/errorHandler';
+import { bookRouter } from './src/resources/book';
 
 const app = express();
 app.use(express.json());
 
-// TODO: mount routers here
-// app.use('/api/users', userRouter);
+app.use('/', bookRouter);
 
 app.use(errorHandler);
 

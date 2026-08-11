@@ -20,7 +20,7 @@ export function bootstrap(): void {
 try {
   registerRoutes();
 } catch (err) {
-  console.error('Server failed to start:', err);
+  console.error('Failed to register routes:', err);
 }
 
 if (require.main === module) {

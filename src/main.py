@@ -1,8 +1,6 @@
-from server.instance import server
-import sys, os
+import { server } from './server/instance';
 
-# Need to import all resources
-from resources.book import *
+// Need to import all resources
+import './resources/book';
 
-if __name__ == '__main__':
-    server.run()
+server.run();

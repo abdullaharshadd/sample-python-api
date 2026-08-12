@@ -1,18 +1,13 @@
 import 'dotenv/config';
-import express from 'express';
-import { errorHandler } from './middleware/errorHandler';
+import { server } from './src/server/instance';
+import { environmentConfig } from './src/environment/instance';
 
-const app = express();
-app.use(express.json());
-
-// TODO: mount routers here
-// app.use('/api/users', userRouter);
-
-app.use(errorHandler);
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+server.app.listen(environmentConfig.port, () => {
+  console.log(
+    `Server listening on port ${environmentConfig.port}${
+      environmentConfig.debug ? ' (debug)' : ''
+    }`
+  );
 });
 
-export default app;
+export default server.app;

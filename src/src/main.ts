@@ -18,7 +18,7 @@ import { environmentConfig } from './environment/instance';
 
 async function main(): Promise<void> {
   try {
-    await server.start(environmentConfig.port);
+    await server.run();
   } catch (err) {
     // Fail fast on startup errors (port in use, bad config, etc.).
     // eslint-disable-next-line no-console

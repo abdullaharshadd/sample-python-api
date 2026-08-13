@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express, { Application, RequestHandler, ErrorRequestHandler } from 'express';
 import bodyParser from 'body-parser';
 import { environmentConfig } from '../environment/instance';
 import { bookRouter, bookRouteDefs } from '../resources/book';
@@ -14,7 +14,9 @@ export class Server {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: true }));
 
-    this.app.use('/', bookRouter);
+    if (bookRouter) {
+      this.app.use('/', bookRouter);
+    }
 
     if (environmentConfig.swaggerUrl) {
       mountSwagger(this.app, environmentConfig.swaggerUrl, bookRouteDefs, {
@@ -24,7 +26,9 @@ export class Server {
       });
     }
 
-    this.app.use(errorHandler);
+    if (errorHandler) {
+      this.app.use(errorHandler as ErrorRequestHandler);
+    }
   }
 
   public run(): void {

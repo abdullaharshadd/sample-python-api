@@ -19,7 +19,7 @@ export class Server {
     }
 
     if (environmentConfig.swaggerUrl) {
-      mountSwagger(this.app, environmentConfig.swaggerUrl, bookRouteDefs, {
+      mountSwagger(this.app, environmentConfig.swaggerUrl, Array.isArray(bookRouteDefs) ? bookRouteDefs : [], {
         version: '1.0',
         title: 'Sample Book API',
         description: 'A simple Book API',

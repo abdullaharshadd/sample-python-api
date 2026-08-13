@@ -26,7 +26,9 @@ export function mountSwagger(
 ): void {
   const paths: Record<string, any> = {};
 
-  for (const def of routeDefs) {
+  const defs = Array.isArray(routeDefs) ? routeDefs : [];
+
+  for (const def of defs) {
     const swaggerPath = expressPathToSwagger(def.path);
     if (!paths[swaggerPath]) {
       paths[swaggerPath] = {};

@@ -1,3 +1,16 @@
+Looking at the error, the issue is that `src/src/swagger.ts` is being imported but it doesn't exist as a module. The error shows `MODULE_NOT_FOUND` for `/app/src/src/swagger.ts`. I need to check what `mountSwagger` does and create the missing swagger.ts file.
+
+The `src/src/server/instance.ts` imports `mountSwagger` from `../swagger` (which resolves to `src/src/swagger.ts`). This file doesn't exist and needs to be created.
+
+I also need to create the other missing files that are referenced. Let me trace all the imports:
+
+- `src/index.ts` - the main entry point
+- `src/src/swagger.ts` - missing
+- `src/src/environment/instance.ts` - referenced
+- `middleware/errorHandler.ts` - referenced
+
+Let me create the missing files needed to fix the MODULE_NOT_FOUND error.
+
 {
   "name": "migrated-app",
   "version": "1.0.0",
@@ -17,7 +30,8 @@
     "dotenv": "^16.0.0",
     "winston": "^3.11.0",
     "body-parser": "latest",
-    "supertest": "latest"
+    "supertest": "latest",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
@@ -30,6 +44,7 @@
     "@types/jest": "^29.0.0",
     "supertest": "^6.3.0",
     "@types/supertest": "^2.0.16",
-    "ts-jest": "^29.0.0"
+    "ts-jest": "^29.0.0",
+    "@types/swagger-ui-express": "^4.1.6"
   }
 }

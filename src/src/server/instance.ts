@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import { environmentConfig } from '../environment/instance';
 import { bookRouter, bookRouteDefs } from '../resources/book';
 import { mountSwagger } from '../swagger';
-import { errorHandler } from '../middleware/errorHandler';
+import { errorHandler } from '../../middleware/errorHandler';
 
 export class Server {
   public readonly app: Application;

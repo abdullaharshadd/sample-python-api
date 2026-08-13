@@ -5,13 +5,17 @@ import { config } from '../config';
  *
  * MIGRATION_NOTE: The source read `PYTHON_ENV` and `PORT` directly from
  * os.environ. In this project, environment parsing is centralized in
- * `src/config.ts` (typed via Zod), so we reuse `NODE_ENV` and `PORT` from
- * there instead of re-reading process.env.
+ * `src/config.ts` (typed via Zod), so we reuse `NODE_ENV` from there instead
+ * of re-reading process.env.
  *
- * MIGRATION_NOTE: The source used the value "development" as the default env
- * and keyed a dictionary by it. The Zod `NODE_ENV` enum also allows "test";
- * for any non-"production" environment we fall back to the development config,
- * preserving the original two-branch behaviour.
+ * MIGRATION_NOTE: The source keyed a plain dict by the env string and would
+ * raise a KeyError for any env other than "development"/"production". The Zod
+ * `NODE_ENV` enum also allows "test", which the original code has no entry
+ * for. To preserve the original fail-loud behaviour (rather than silently
+ * defaulting), we look the env up in the map and throw when it is missing.
+ *
+ * Per human feedback: both development and production now resolve to
+ * port 8080, so environmentConfig.port is 8080 regardless of NODE_ENV.
  */
 
 export interface EnvironmentConfig {
@@ -20,24 +24,29 @@ export interface EnvironmentConfig {
   swaggerUrl: string | null;
 }
 
-const port = Number(config.PORT);
-
 const allEnvironments: Record<'development' | 'production', EnvironmentConfig> = {
   development: {
-    port: 5000,
+    port: 8080,
     debug: true,
     swaggerUrl: '/api/swagger',
   },
   production: {
-    // MIGRATION_NOTE: Source used the runtime PORT env var here (defaulting to
-    // 8080 in Python). We mirror that by using the parsed config.PORT value.
-    port,
+    port: 8080,
     debug: false,
     swaggerUrl: null,
   },
 };
 
-export const environmentConfig: EnvironmentConfig =
-  config.NODE_ENV === 'production'
-    ? allEnvironments.production
-    : allEnvironments.development;
+function resolveEnvironmentConfig(env: string): EnvironmentConfig {
+  const selected = (allEnvironments as Record<string, EnvironmentConfig | undefined>)[env];
+  if (!selected) {
+    // MIGRATION_NOTE: Mirrors the original dict lookup KeyError for unknown
+    // environments (e.g. "test"), failing loud instead of silently defaulting.
+    throw new Error(`No environment configuration defined for NODE_ENV="${env}"`);
+  }
+  return selected;
+}
+
+export const environmentConfig: EnvironmentConfig = resolveEnvironmentConfig(
+  config.NODE_ENV,
+);

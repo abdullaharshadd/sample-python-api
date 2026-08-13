@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import { environmentConfig } from '../environment/instance';
-import { bookRouter, bookRouteDefs } from '../routes/book';
+import { bookRouter, bookRouteDefs } from '../../index';
 import { mountSwagger } from '../swagger';
 import { errorHandler } from '../../middleware/errorHandler';
 
